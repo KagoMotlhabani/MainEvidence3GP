@@ -8,6 +8,8 @@ This is the same script that I used for my CPAs in Game Production 1
 -Kago
 */
 
+//Testing Github
+
 public class PauseMenu : MonoBehaviour
 {
     public bool paused = false;
