@@ -36,11 +36,13 @@ public class PauseMenu : MonoBehaviour
         {
             pauseMenu.SetActive(true);
             paused = true;
+            Time.timeScale = 0;
         }
         else //if paused, resume the game and deactivate the menu
         {
             pauseMenu.SetActive(false);
             paused = false;
+            Time.timeScale = 1;
         }
     }//end loadscene
 
