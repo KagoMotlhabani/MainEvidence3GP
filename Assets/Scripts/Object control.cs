@@ -74,7 +74,9 @@ public class Objectcontrol : MonoBehaviour
 
 
         }
-    }
+    }//end update
+
+    //toggle for Blue Objects
     public void ObjectVisibilityB()
     {
         if (!objectVisibleB)
@@ -92,8 +94,9 @@ public class Objectcontrol : MonoBehaviour
 
         }
 
-    }
+    }//end blue visibility
 
+//toggle for Red Objects
     public void ObjectVisibilityR()
     {
         if (!objectVisibleR)
@@ -112,8 +115,9 @@ public class Objectcontrol : MonoBehaviour
 
 
         }
-    }
+    }//end red visibilty
 
+    //toggle for Green Objects
     public void ObjectVisibilityG()
     {
         if (!objectVisibleG)
@@ -128,5 +132,5 @@ public class Objectcontrol : MonoBehaviour
                 objectToToggleG.SetActive(true);
             }
         }
-    }
-}
+    }//end green visibility
+}//end class
