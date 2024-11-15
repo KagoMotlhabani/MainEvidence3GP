@@ -6,65 +6,80 @@ public class PlayerController : MonoBehaviour
 {
     public Transform orientation;
     public Rigidbody rb;
-    public CharacterController controller;
-    public Vector3 playerVelocity;
+    private CharacterController controller;
+    private Vector3 playerVelocity;
     public bool isGrounded;
     public bool groundPlay;
     public float jumpForce = 1.0f;
     public float playerSpeed = 5.0f;
     public float rotationSpeed = 2.0f;
-    public float gravityValue = -9.8f;
     public float jumpHeight = 1.0f;
-    //public float jumpCooldown;
     public float verticalMovement;
     public float horizontalMovement;
 
+    private bool isGravityFlipped = false; // Tracks gravity flip state
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
-        rb.freezeRotation = true;
         rb.GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Player Movement Code
+        Vector3 moveInput = new Vector3(
+            Input.GetAxisRaw("Horizontal"),
+            0,
+            Input.GetAxisRaw("Vertical")
+        );
 
-        //Player Movement Code
-        Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        // Get movement direction relative to orientation
+        Vector3 move = orientation.TransformDirection(moveInput);
+
+        // Adjust movement direction based on gravity flip state
+        if (isGravityFlipped)
+        {
+            move.y *= -1; // Flip vertical movement direction
+        }
+
+        // Move the player
         controller.Move(move * Time.deltaTime * playerSpeed);
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        // Rotate the player to face the direction of movement
+        if (moveInput != Vector3.zero)
+        {
+            Quaternion rotationTarget = Quaternion.LookRotation(move);
+            Vector3 targetEuler = rotationTarget.eulerAngles;
 
+            // Lock X and Z rotations, adjust X for gravity state
+            targetEuler.x = isGravityFlipped ? 180f : 0f; // Flip X-axis for upside down
+            targetEuler.z = 0f;
+
+            gameObject.transform.rotation = Quaternion.Slerp
+                (
+                gameObject.transform.rotation,
+                Quaternion.Euler(targetEuler),
+                rotationSpeed * Time.deltaTime
+                );
+        }
+
+        // Apply movement
+        controller.Move(move * Time.deltaTime * playerSpeed);
+
+        // Apply gravity direction based on gravity state
         groundPlay = controller.isGrounded;
         if (groundPlay && playerVelocity.y <= 0)
         {
             playerVelocity.y = 0f;
         }
-
-        //If the player is moving, set the forward direction to the direction of move
-        if (move != Vector3.zero)
-        {
-            Quaternion rotationTarget = Quaternion.LookRotation(move);
-            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotationTarget, rotationSpeed * Time.deltaTime);
-            //gameObject.transform.forward = move;
-
-        }
-        //Player facing
         playerVelocity = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
+    }
 
-        //Jump Code
-        if (Input.GetButtonDown("Jump") && groundPlay)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
-
-
-    }//end Update
-
-}//end class
+    public void SetGravityState(bool flipped)
+    {
+        // Updates the gravity flip state
+        isGravityFlipped = flipped;
+    }
+}
