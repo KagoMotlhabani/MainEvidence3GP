@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     public Vector3 playerVelocity;
     public bool isGrounded;
+    public bool isRunning;
     public bool groundPlay;
     public float jumpForce = 1.0f;
     public float playerSpeed = 5.0f;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
         rb.freezeRotation = true;
         rb.GetComponent<Rigidbody>();
     }
@@ -54,10 +56,15 @@ public class PlayerController : MonoBehaviour
             Quaternion rotationTarget = Quaternion.LookRotation(move);
             gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotationTarget, rotationSpeed * Time.deltaTime);
             //gameObject.transform.forward = move;
+            isRunning = true;
+            Debug.Log($"running");
+        }else{
+            isRunning = false;
+            Debug.Log($"idle");
         }
 
         //Animation Stuff
-
+        animator.SetBool("isRunning", isRunning);
 
         //Player facing
         playerVelocity = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
