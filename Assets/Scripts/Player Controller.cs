@@ -29,8 +29,9 @@ public class PlayerController : MonoBehaviour
     {
         controller = gameObject.GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        rb.freezeRotation = true;
         rb.GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        
     }
 
     // Update is called once per frame
@@ -57,10 +58,8 @@ public class PlayerController : MonoBehaviour
             gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotationTarget, rotationSpeed * Time.deltaTime);
             //gameObject.transform.forward = move;
             isRunning = true;
-            Debug.Log($"running");
         }else{
             isRunning = false;
-            Debug.Log($"idle");
         }
 
         //Animation Stuff

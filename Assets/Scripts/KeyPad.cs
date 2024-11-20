@@ -8,16 +8,19 @@ using UnityEngine.UI;
 
 public class KeyPad : MonoBehaviour
 {
+    //attached to door
     [SerializeField] public TMP_Text Ans;
-    public string Answer = "645";
-    public GameObject DoorObject;
+    public string Answer = "488";// order: blue, green, red
+    public string currentInput;
+    public Door door;
+    public GameObject keypad;
     public float toggleDistance = 50f;
     public bool doorObjectV;
 
 
      void Start()
     {
-       DoorObject.SetActive(true); 
+       //DoorObject.SetActive(true); 
     }
     // Start is called before the first frame update
     public void Number(int number)
@@ -28,9 +31,14 @@ public class KeyPad : MonoBehaviour
     // Update is called once per frame
     public void Enter()
     {
-        if(Ans.text == Answer)
+        currentInput = Ans.text;
+        Debug.Log($"Current input is: " + currentInput);
+        if(currentInput== Answer)//if the player answer is correvt
         {
             Ans.text = "Correct";
+            Debug.Log($"Correct, open door");
+            door.OpenDoor();
+/*
             if (!doorObjectV)
             {
                 Vector3 playerPosition = transform.position;
@@ -40,15 +48,17 @@ public class KeyPad : MonoBehaviour
                 if (distance <= toggleDistance)
                 {
                     doorObjectV = false;
-                    DoorObject.SetActive(false);
+                    //DoorObject.SetActive(false);
                 }
 
 
             }
+            */
         } 
        else
         {
             Ans.text = "Invalid";
         }
-    }
-}
+    }//end enter function
+   
+}//end class
