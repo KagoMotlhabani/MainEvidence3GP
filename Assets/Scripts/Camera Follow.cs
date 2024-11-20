@@ -25,7 +25,7 @@ public class CameraFollow : MonoBehaviour
         this.transform.position = smoothedPosition;
 
         //the camera will face the same direction as the player
-        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, orientation.rotation, camRotationDelay);
+        //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, orientation.rotation, camRotationDelay);
 
 
     }//end update
