@@ -18,7 +18,7 @@ public class CameraFollow : MonoBehaviour
     }//end start
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 playerPosition = orientation.position + offset;
         Vector3 smoothedPosition = Vector3.Lerp(this.transform.position, playerPosition, camFollowDelay);

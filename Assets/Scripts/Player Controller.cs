@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     //public float jumpCooldown;
     public float verticalMovement;
     public float horizontalMovement;
+    public Animator animator;
 
 
 
@@ -53,8 +54,11 @@ public class PlayerController : MonoBehaviour
             Quaternion rotationTarget = Quaternion.LookRotation(move);
             gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotationTarget, rotationSpeed * Time.deltaTime);
             //gameObject.transform.forward = move;
-
         }
+
+        //Animation Stuff
+
+
         //Player facing
         playerVelocity = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
 
