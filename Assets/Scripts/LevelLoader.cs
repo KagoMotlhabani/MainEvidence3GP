@@ -14,7 +14,7 @@ public class LevelLoader : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("Player")){
-            SceneManager.LoadScene("Level 3");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }//end class
