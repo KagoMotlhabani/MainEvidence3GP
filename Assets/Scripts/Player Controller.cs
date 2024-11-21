@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     public Vector3 playerVelocity;
     public bool isGrounded;
+    public bool isRunning;
     public bool groundPlay;
     public float jumpForce = 1.0f;
     public float playerSpeed = 5.0f;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     //public float jumpCooldown;
     public float verticalMovement;
     public float horizontalMovement;
+    public Animator animator;
 
 
 
@@ -26,8 +28,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
-        rb.freezeRotation = true;
+        animator = GetComponentInChildren<Animator>();
         rb.GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        
     }
 
     // Update is called once per frame
@@ -53,8 +57,14 @@ public class PlayerController : MonoBehaviour
             Quaternion rotationTarget = Quaternion.LookRotation(move);
             gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotationTarget, rotationSpeed * Time.deltaTime);
             //gameObject.transform.forward = move;
-
+            isRunning = true;
+        }else{
+            isRunning = false;
         }
+
+        //Animation Stuff
+        animator.SetBool("isRunning", isRunning);
+
         //Player facing
         playerVelocity = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
 
