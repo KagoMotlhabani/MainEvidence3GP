@@ -9,6 +9,7 @@ TagManager:
   - Blue
   - Green
   - Red
+  - DahTrigger
   layers:
   - Default
   - TransparentFX
