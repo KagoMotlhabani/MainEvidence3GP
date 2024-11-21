@@ -21,17 +21,13 @@ public class PlayerController : MonoBehaviour
     public float horizontalMovement;
     public Animator animator;
 
-
-
-
     // Start is called before the first frame update
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         rb.GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-        
+        rb.freezeRotation = true;    
     }
 
     // Update is called once per frame
