@@ -7,7 +7,7 @@ public class GravSwap : MonoBehaviour
     public GameObject Scene;
     private Quaternion targetRotation;
     private bool isRotating = false;
-    private float rotationSpeed = 2.0f; // Adjust for faster/slower rotation
+    private float rotationSpeed = 3.0f; // Adjust for faster/slower rotation
 
     void Update()
     {
