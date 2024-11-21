@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8974339104492938005}
   - component: {fileID: 4996313524129392414}
   - component: {fileID: 2203742870965925627}
-  - component: {fileID: 7952431436166410755}
   - component: {fileID: 5898418238467087885}
   m_Layer: 0
   m_Name: Main Camera
@@ -111,24 +110,6 @@ MonoBehaviour:
   camFollowDelay: 0.125
   camRotationDelay: 0.02
   offset: {x: 0, y: 1, z: -4}
---- !u!114 &7952431436166410755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3007312609450746147}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 026c1b66fd5ab034f9d2de9eb60a560c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Xsensetivity: 0
-  Ysensetivity: 0
-  Xrotation: 0
-  Yrotation: 0
-  sensitivity: -1
-  orientation: {fileID: 0}
 --- !u!114 &5898418238467087885
 MonoBehaviour:
   m_ObjectHideFlags: 0
