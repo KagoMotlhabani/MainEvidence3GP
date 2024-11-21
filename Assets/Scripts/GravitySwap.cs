@@ -1,61 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GravitySwap : MonoBehaviour
 {
-    private CharacterController CCR;
-    private float grav = 9.8f;
-    private Vector3 Velocity;
-    private int gravityMultiplier = -1;
+    private int gravityMultiplier = -1; // Default gravity direction is downward
     private PlayerController playerController;
 
     private void Start()
     {
-        CCR = GetComponent<CharacterController>();
-        playerController = GetComponent<PlayerController>(); // Reference PlayerController
+        // Get a reference to PlayerController
+        playerController = GetComponent<PlayerController>();
     }
 
-    void Update()
+    private void Update()
     {
         // Check for space key press to flip gravity
         if (Input.GetKeyDown(KeyCode.Space))
         {
             FlipGravity();
         }
-
-        // Apply gravity each frame
-        Velocity.y += gravityMultiplier * grav * Time.deltaTime;
-        CCR.Move(Velocity * Time.deltaTime);
     }
 
-    void FlipGravity()
+    private void FlipGravity()
     {
-        // Flip the gravity direction
+        // Flip gravity multiplier
         gravityMultiplier *= -1;
 
-        // Reset vertical velocity for a smooth transition
-        Velocity.y = 0;
+        // Notify PlayerController of gravity flip
+        playerController.SetGravityDirection(gravityMultiplier);
 
+        // Rotate the player model based on gravity state
         if (gravityMultiplier == 1)
         {
-            // Gravity is flipped
-            transform.rotation = Quaternion.Euler(180f, transform.eulerAngles.y, 0f); // Upside-down
-            playerController.SetGravityState(false); // Notify player controller
-
-            // Update orientation to match flipped state
-            playerController.orientation.localRotation = Quaternion.Euler(180f, 0f, 0f);
-           
+            // Upside down
+            transform.rotation = Quaternion.Euler(180f, transform.eulerAngles.y, 0f);
         }
         else
         {
-            // Gravity is normal
-            transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f); // Upright
-            playerController.SetGravityState(true); // Notify player controller
-
-            // Update orientation to normal
-            playerController.orientation.localRotation = Quaternion.identity;
-            
+            // Upright
+            transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
         }
     }
 }

@@ -1,85 +1,82 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Transform orientation;
-    public Rigidbody rb;
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    public bool isGrounded;
-    public bool groundPlay;
-    public float jumpForce = 1.0f;
-    public float playerSpeed = 5.0f;
-    public float rotationSpeed = 2.0f;
-    public float jumpHeight = 1.0f;
-    public float verticalMovement;
-    public float horizontalMovement;
+    public Transform orientation; // Reference to the orientation object
+    public CharacterController controller; // Reference to the CharacterController
+    private float sprintSpeed = 5f;
+    private Vector3 playerVelocity; // Tracks movement velocity
+    private bool isGrounded;
+    private int gravityMultiplier = -1; // Default gravity is downward
+    private float gravity = 9.8f; // Gravitational force
+    public float playerSpeed = 5.0f; // Movement speed
+    public float jumpHeight = 2.0f; // Jump height
 
-    private bool isGravityFlipped = false; // Tracks gravity flip state
-
-    void Start()
+    private void Start()
     {
-        controller = gameObject.GetComponent<CharacterController>();
-        rb.GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    private void Update()
     {
-        // Player Movement Code
+        HandleMovement();
+        ApplyGravity();
+    }
+
+    private void HandleMovement()
+    {
+        // Get input for movement
         Vector3 moveInput = new Vector3(
-            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxis("Horizontal"),
             0,
-            Input.GetAxisRaw("Vertical")
+            Input.GetAxis("Vertical")
         );
 
-        // Get movement direction relative to orientation
+        // Convert input to world direction using orientation
         Vector3 move = orientation.TransformDirection(moveInput);
-
-        // Adjust movement direction based on gravity flip state
-        if (isGravityFlipped)
-        {
-            move.y *= -1; // Flip vertical movement direction
-        }
 
         // Move the player
         controller.Move(move * Time.deltaTime * playerSpeed);
 
-        // Rotate the player to face the direction of movement
+        // Rotate the player towards movement direction
         if (moveInput != Vector3.zero)
         {
-            Quaternion rotationTarget = Quaternion.LookRotation(move);
-            Vector3 targetEuler = rotationTarget.eulerAngles;
-
-            // Lock X and Z rotations, adjust X for gravity state
-            targetEuler.x = isGravityFlipped ? 180f : 0f; // Flip X-axis for upside down
-            targetEuler.z = 0f;
-
-            gameObject.transform.rotation = Quaternion.Slerp
-                (
-                gameObject.transform.rotation,
-                Quaternion.Euler(targetEuler),
-                rotationSpeed * Time.deltaTime
-                );
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3f);
         }
 
-        // Apply movement
-        controller.Move(move * Time.deltaTime * playerSpeed);
-
-        // Apply gravity direction based on gravity state
-        groundPlay = controller.isGrounded;
-        if (groundPlay && playerVelocity.y <= 0)
+        // Apply sprint speed
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            playerVelocity.y = 0f;
+            controller.Move(move * Time.deltaTime * sprintSpeed);
+
         }
-        playerVelocity = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
     }
 
-    public void SetGravityState(bool flipped)
+    private void ApplyGravity()
     {
-        // Updates the gravity flip state
-        isGravityFlipped = flipped;
+        // Check if player is on the ground
+        isGrounded = controller.isGrounded;
+
+        if (isGrounded && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f; // Reset vertical velocity when grounded
+        }
+
+        // Apply gravity
+        playerVelocity.y += gravityMultiplier * gravity * Time.deltaTime;
+
+        // Move the player vertically
+        controller.Move(playerVelocity * Time.deltaTime);
+    }
+
+    public void SetGravityDirection(int multiplier)
+    {
+        // Update gravity multiplier
+        gravityMultiplier = multiplier;
+
+        // Reset vertical velocity for a smooth gravity flip
+        playerVelocity.y = 0f;
     }
 }
