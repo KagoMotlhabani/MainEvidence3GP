@@ -10,7 +10,7 @@ public class KeyPad : MonoBehaviour
 {
     //attached to door
     [SerializeField] public TMP_Text Ans;
-    public string Answer = "488";// order: blue, green, red
+    public string Answer = "583";// order: blue = 5, green = 8, red = 3
     public string currentInput;
     public Door door;
     public GameObject happyJosh, disappointedJosh;

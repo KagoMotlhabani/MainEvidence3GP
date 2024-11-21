@@ -22,15 +22,15 @@ public class TutorialManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider tut) {
         if(tut.CompareTag("Blue")){
-            tutorialText.text = "Press B to view all the the items in this blue area";
+            tutorialText.text = "Press B to reveal hidden items in this blue area";
         }//end Blue tutorial
 
         if(tut.CompareTag("Red")){
-            tutorialText.text = "Press R to view all the the items in this red area";
+            tutorialText.text = "Press R to reveal hidden items in this red area";
         }//end Red tutorial
 
         if(tut.CompareTag("Green")){
-            tutorialText.text = "Press G to view all the the items in this green area";
+            tutorialText.text = "Press G to reveal hidden items in this green area";
         }//end Green tutorial
     }//end on Trigger Enter
 
