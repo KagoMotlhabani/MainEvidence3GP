@@ -11,7 +11,7 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tutorialText.text = tutorialText.text + "";//put welcome message here
+
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class TutorialManager : MonoBehaviour
     }//end on Trigger Enter
 
     private void OnTriggerExit(Collider tut) {
-         if(tut.CompareTag("Blue")){
+        if(tut.CompareTag("Blue")){
             tutorialText.text = "";
         }//end Blue tutorial
 
@@ -47,6 +47,6 @@ public class TutorialManager : MonoBehaviour
             tutorialText.text = "";
         }//end Green tutorial
     
-        
+        tutorialText.text = "";
     }
 }//end class
